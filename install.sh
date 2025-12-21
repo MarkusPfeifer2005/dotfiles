@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#####################
+# installing software
+#####################
+
 function printHeader () {
     echo -e "\e[34m${1}\e[0m"
 }
@@ -65,14 +69,7 @@ programs=(
     "htop"
 )
 
-sudo apt install "${programs[@]}"
-
-# vimplug see: https://github.com/junegunn/vim-plug?tab=readme-ov-file
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-vim +"PlugInstall|q|q"
-vim +"CocInstall -sync coc-clangd coc-pyright|q"  # calls the commands inside of vim
+sudo apt install "${programs[@]}" -y
 
 # setup Bluetooth
 sudo apt purge pulseaudio-module-bluetooth -y
@@ -125,4 +122,138 @@ sudo apt install code -y # or code-insiders
 #curl -sS https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
 #echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 #sudo apt-get update && sudo apt-get install spotify-client -y
+
+
+#############
+# configuring
+#############
+
+# configuring the bash shell
+newFile="$HOME/.bash_customisation"
+cp config/bashrc ~/.bashrc
+cp config/bash_customisation "$newFile"
+
+# configuring alacritty
+mkdir -p ~/.config/alacritty
+if [ -z "$(ls ~/.config/alacritty)" ]; then
+    wget https://raw.githubusercontent.com/alacritty/alacritty-theme/master/themes/blood_moon.toml -O ~/.config/alacritty/alacritty.toml
+fi
+
+# configuring i3
+if [ "$XDG_SESSION_TYPE" = "x11" ]
+then
+	mkdir -p $HOME/.config/i3
+	cp config/i3/config $HOME/.config/i3/config
+fi
+
+# configuring sway
+if [ "$XDG_SESSION_TYPE" = "wayland" ]
+then
+	mkdir -p $HOME/.config/sway $HOME/.config/waybar
+	cp config/sway/config $HOME/.config/sway/config
+    cp config/waybar/config $HOME/.config/waybar/config
+    cp config/waybar/style.css $HOME/.config/waybar/style.css
+
+    swaymsg reload
+fi
+
+# configure vim
+cp config/vimrc ~/.vimrc
+
+# configure zathura (PDF viewer)
+mkdir -p $HOME/.config/zathura
+cp config/zathurarc $HOME/.config/zathura/zathurarc
+
+
+##########################
+# removing GNOME bloatware
+##########################
+
+# List of GNOME games to remove
+gnome_games=(
+    "aisleriot"       # Solitaire Card Games
+    "gnome-mahjongg"  # Mahjongg game
+    "gnome-mines"     # Minesweeper game
+    "gnome-sudoku"    # Sudoku game
+    "gnome-klotski"   # Klotski sliding puzzle game
+    "gnome-nibbles"   # Nibbles game
+    "gnome-robots"    # Robots game
+    "gnome-tetravex"  # Tetravex puzzle game
+    "quadrapassel"    # Tetris-like game
+    "lightsoff"       # Lights Off puzzle game
+    "swell-foop"      # Space-themed game
+    "tali"            # Puzzle game
+    "gnome-2048"      # 2048 game
+    "five-or-more"    # Puzzle game
+    "hitori"          # Hitori puzzle game
+    "iagno"           # Reversi game
+)
+
+# List of other potential bloatware to remove
+bloatware=(
+    "gnome-maps"      # Maps application
+    "gnome-contacts"  # Contacts application
+    "gnome-calendar"  # Calendar application
+    "gnome-characters" # Character map application
+    "gnome-logs"       # System logs viewer
+    "gnome-todo"       # Personal task manager
+    "gnome-boxes"      # Simple application to access remote or virtual systems
+    "gnome-photos"     # Photos application
+    "gnome-music"      # Music player
+    "gnome-clocks"     # Clocks application
+    "gnome-recipes"    # Recipes application
+    "cheese"           # Webcam application
+    "rhythmbox"        # Music player
+    "shotwell"         # Photo manager
+    "evolution"        # Email and calendar application
+    "totem"            # Video player
+    "gnome-disk-utility"
+    "gnome-backgrounds"
+    "gnome-bluetooth-sendto"
+    "gnome-calculator"
+    "gnome-connections"
+    "gnome-font-viewer"
+    "gnome-initial-setup"
+    "gnome-remote-desktop"
+    "gnome-snapshot"
+    "gnome-software"
+    "gnome-sound-recorder"
+    "gnome-sushi"
+    "gnome-system-monitor"
+    "gnome-text-editor"
+    "gnome-tour"
+    "gnome-user-docs"
+    "gnome-user-share"
+    "gnome-weather"
+    "simple-scan"
+    "file-roller"
+    "eog"
+    "yelp"
+    "evince"
+    "seahorse"
+    "malcontent"
+    "loupe"
+    "baobab"
+)
+
+# Remove GNOME games
+echo "Removing GNOME games..."
+sudo apt purge "${gnome_games[@]}" -y
+
+# Remove other potential bloatware
+echo
+echo "Removing other potential bloatware..."
+sudo apt remove "${bloatware[@]}" -y
+
+# End of script
+echo "Cleanup completed."
+
+
+######################
+# system configuration
+######################
+
+# https://wiki.debian.org/ConfigurePowerButton
+sudo cp etc/systemd/logind.conf /etc/systemd/logind.conf
+systemctl restart systemd-logind.service
 
