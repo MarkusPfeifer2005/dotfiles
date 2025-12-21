@@ -32,7 +32,6 @@ bloatware=(
     "gnome-logs"       # System logs viewer
     "gnome-todo"       # Personal task manager
     "gnome-boxes"      # Simple application to access remote or virtual systems
-    "gnome-documents"  # Documents viewer
     "gnome-photos"     # Photos application
     "gnome-music"      # Music player
     "gnome-clocks"     # Clocks application
@@ -42,24 +41,43 @@ bloatware=(
     "shotwell"         # Photo manager
     "evolution"        # Email and calendar application
     "totem"            # Video player
+    "gnome-disk-utility"
+    "gnome-backgrounds"
+    "gnome-bluetooth-sendto"
+    "gnome-calculator"
+    "gnome-connections"
+    "gnome-font-viewer"
+    "gnome-initial-setup"
+    "gnome-remote-desktop"
+    "gnome-snapshot"
+    "gnome-software"
+    "gnome-sound-recorder"
+    "gnome-sushi"
+    "gnome-system-monitor"
+    "gnome-text-editor"
+    "gnome-tour"
+    "gnome-user-docs"
+    "gnome-user-share"
+    "gnome-weather"
+    "simple-scan"
+    "file-roller"
+    "eog"
+    "yelp"
+    "evince"
+    "seahorse"
+    "malcontent"
+    "loupe"
+    "baobab"
 )
-
-# Function to remove packages
-remove_packages() {
-    local packages=("$@")
-    for package in "${packages[@]}"; do
-        echo "Removing $package..."
-        sudo apt-get remove -y "$package"
-    done
-}
 
 # Remove GNOME games
 echo "Removing GNOME games..."
-remove_packages "${gnome_games[@]}"
+sudo apt purge "${gnome_games[@]}" -y
 
 # Remove other potential bloatware
+echo
 echo "Removing other potential bloatware..."
-remove_packages "${bloatware[@]}"
+sudo apt remove "${bloatware[@]}" -y
 
 # End of script
 echo "Cleanup completed."

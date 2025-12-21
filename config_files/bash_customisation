@@ -5,4 +5,3 @@ export PATH="$HOME/platform-tools:$PATH"
 # https://buildozer.readthedocs.io/en/latest/installation.html#targeting-android
 export PATH=$PATH:~/.local/bin/
 
-export TIMEWARRIORDB=~/timewarrior

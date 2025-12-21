@@ -8,6 +8,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}  " Nodejs extension host, load e
 Plug 'jiangmiao/auto-pairs'  " Vim plugin, insert or delete brackets, parens, quotes in pair
 Plug 'preservim/nerdtree'  " A tree explorer plugin for vim. 
 Plug 'Yggdroot/indentLine'  " A vim plugin to display the indention levels with thin vertical lines
+Plug 'lervag/vimtex'
 
 call plug#end()
 
@@ -22,8 +23,7 @@ filetype plugin indent on
 inoremap <silent><expr> <Tab>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
+      \ "\<Tab>"
 
 " Use <S-Tab> (Shift-Tab) to go backwards in the popup
 inoremap <silent><expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
@@ -55,4 +55,26 @@ au BufNewFile,BufRead *.py set autoindent
 au BufNewFile,BufRead *.py set fileformat=unix
 
 let python_highlight_all=1
+
+" Enable VimTeX syntax and indentation
+filetype plugin indent on
+" Enable continuous compilation
+let g:vimtex_compiler_method = 'latexmk'
+" Enable automatic PDF viewer
+let g:vimtex_view_method = 'zathura'
+" Disable concealment completely
+let g:tex_conceal = ""
+let g:vimtex_syntax_conceal_disable = 1
+set conceallevel=0
+set concealcursor=
+let g:indentLine_fileTypeExclude = ['tex']
+" save & compile shortcut [F5]
+nnoremap <F5> :w<CR>:VimtexCompile<CR>:echo "Compiled!"<CR>
+" disable warnings
+"let g:vimtex_quickfix_mode = 0
+" Enable text width highlighting
+set colorcolumn=100
+highlight ColorColumn ctermbg=238 guibg=#3a3a3a
+
+
 

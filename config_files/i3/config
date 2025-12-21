@@ -199,3 +199,6 @@ exec --no-startup-id xsetroot -solid "#000000"
 # lock screen
 bindsym $mod+Control+l exec i3lock -c 000000
 
+bindsym Print exec scrot ~/Pictures/Screenshots/screenshot_%Y-%m-%d-%H%M%S.png
+bindsym Mod4+Print exec scrot -s ~/Pictures/Screenshots/screenshot_%Y-%m-%d-%H%M%S.png
+
