@@ -19,22 +19,14 @@ function printHeader () {
 CPU_ARCHITECTURE="`uname -m`"
 echo "Detected CPU-architecture: $CPU_ARCHITECTURE"
 
-if [ "$XDG_SESSION_TYPE" = "x11" ]
-then
-    echo "You are on X11!"
-    sudo apt install i3 lightdm -y
-elif [ "$XDG_SESSION_TYPE" = "wayland" ]
-then
-    echo "You are on Wayland!"
-    sudo apt install sway\
-        waybar\
-        swaylock\
-        swayidle\
-        fonts-font-awesome\
-        fonts-fork-awesome -y
-fi
-
 programs=(
+    "lightdm"  # login manager
+    "sway"
+    "waybar"
+    "swaylock"
+    "fonts-font-awesome"
+    "fonts-fork-awesome"
+    "xwayland"  # for X11 compatablility (e.g.: for feh)
 	"firefox-esr"
 	"thunderbird"
     "lxappearance"  # to switch to dark mode (might require installation of gnome-themes-extra)
@@ -51,7 +43,6 @@ programs=(
     "feh"
     "mpv"
     "zip"
-	"scrot"
     "xournalpp"
     "latexmk"
     "zathura"
@@ -68,7 +59,7 @@ programs=(
     "wget"
     "htop"
 )
-
+sudo apt update
 sudo apt install "${programs[@]}" -y
 
 # setup Bluetooth
@@ -139,21 +130,13 @@ if [ -z "$(ls ~/.config/alacritty)" ]; then
     wget https://raw.githubusercontent.com/alacritty/alacritty-theme/master/themes/blood_moon.toml -O ~/.config/alacritty/alacritty.toml
 fi
 
-# configuring i3
-if [ "$XDG_SESSION_TYPE" = "x11" ]
-then
-	mkdir -p $HOME/.config/i3
-	cp config/i3/config $HOME/.config/i3/config
-fi
-
 # configuring sway
+mkdir -p $HOME/.config/sway $HOME/.config/waybar
+cp config/sway/config $HOME/.config/sway/config
+cp config/waybar/config $HOME/.config/waybar/config
+cp config/waybar/style.css $HOME/.config/waybar/style.css
 if [ "$XDG_SESSION_TYPE" = "wayland" ]
 then
-	mkdir -p $HOME/.config/sway $HOME/.config/waybar
-	cp config/sway/config $HOME/.config/sway/config
-    cp config/waybar/config $HOME/.config/waybar/config
-    cp config/waybar/style.css $HOME/.config/waybar/style.css
-
     swaymsg reload
 fi
 
@@ -236,17 +219,7 @@ bloatware=(
     "baobab"
 )
 
-# Remove GNOME games
-echo "Removing GNOME games..."
-sudo apt purge "${gnome_games[@]}" -y
-
-# Remove other potential bloatware
-echo
-echo "Removing other potential bloatware..."
-sudo apt remove "${bloatware[@]}" -y
-
-# End of script
-echo "Cleanup completed."
+sudo apt purge "${gnome_games[@]}" "${bloatware[@]}" -y
 
 
 ######################
@@ -254,6 +227,12 @@ echo "Cleanup completed."
 ######################
 
 # https://wiki.debian.org/ConfigurePowerButton
-sudo cp etc/systemd/logind.conf /etc/systemd/logind.conf
-systemctl restart systemd-logind.service
+HASH1=$(sha256sum /etc/systemd/logind.conf | awk '{ print $1 }')
+HASH2=$(sha256sum etc/systemd/logind.conf | awk '{ print $1 }')
+if [ $HASH1 != $HASH2 ]; then
+    sudo cp etc/systemd/logind.conf /etc/systemd/logind.conf
+    systemctl restart systemd-logind.service
+else
+    echo "Power button already correctly configured."
+fi
 

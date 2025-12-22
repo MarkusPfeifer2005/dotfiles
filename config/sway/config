@@ -202,6 +202,7 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
+
 #
 # Utilities:
 #
@@ -222,7 +223,9 @@ bindsym $mod+r mode "resize"
     bindsym --locked $mod+XF86MonBrightnessUp exec brightnessctl -d kbd_backlight set 10%+
     bindsym --locked $mod+XF86MonBrightnessDown exec brightnessctl -d kbd_backlight set 10%-
     # Special key to take a screenshot with grim
-    bindsym Print exec grim
+    set $SCREENSHOT_LOC ~/Pictures/Screenshots/screenshot_$(date +%Y-%m-%d-%H%M%S).png
+    bindsym Print exec grim $SCREENSHOT_LOC
+    bindsym Mod4+Print exec grim -g "$(slurp)" $SCREENSHOT_LOC
 
 #
 # Status Bar:
@@ -236,7 +239,6 @@ bar {
 input "type:keyboard" {
     xkb_layout de
 }
-
 
 default_border pixel 1
 default_floating_border pixel 1
