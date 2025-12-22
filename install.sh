@@ -58,6 +58,8 @@ programs=(
     "libspa-0.2-bluetooth"  # bluetooth
     "wget"
     "htop"
+    "grim"  # for screenshots
+    "slurp"  # to select regions for screenshots
 )
 sudo apt update
 sudo apt install "${programs[@]}" -y
