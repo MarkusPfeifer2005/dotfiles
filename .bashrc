@@ -112,4 +112,3 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source /home/markus/.bash_customisation

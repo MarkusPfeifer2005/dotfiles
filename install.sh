@@ -123,8 +123,7 @@ sudo apt install code -y # or code-insiders
 
 # configuring the bash shell
 newFile="$HOME/.bash_customisation"
-cp config/bashrc ~/.bashrc
-cp config/bash_customisation "$newFile"
+cp .bashrc ~/.bashrc
 
 # configuring alacritty
 mkdir -p ~/.config/alacritty
@@ -134,20 +133,20 @@ fi
 
 # configuring sway
 mkdir -p $HOME/.config/sway $HOME/.config/waybar
-cp config/sway/config $HOME/.config/sway/config
-cp config/waybar/config $HOME/.config/waybar/config
-cp config/waybar/style.css $HOME/.config/waybar/style.css
+cp .config/sway/config $HOME/.config/sway/config
+cp .config/waybar/config $HOME/.config/waybar/config
+cp .config/waybar/style.css $HOME/.config/waybar/style.css
 if [ "$XDG_SESSION_TYPE" = "wayland" ]
 then
     swaymsg reload
 fi
 
 # configure vim
-cp config/vimrc ~/.vimrc
+cp .config/vimrc ~/.vimrc
 
 # configure zathura (PDF viewer)
 mkdir -p $HOME/.config/zathura
-cp config/zathurarc $HOME/.config/zathura/zathurarc
+cp .config/zathurarc $HOME/.config/zathura/zathurarc
 
 
 ##########################
