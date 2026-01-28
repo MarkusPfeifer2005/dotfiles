@@ -83,9 +83,7 @@ let g:indentLine_fileTypeExclude = ['tex']
 nnoremap <F5> :w<CR>:VimtexCompile<CR>:echo "Compiled!"<CR>
 " disable warnings
 "let g:vimtex_quickfix_mode = 0
-" Enable text width highlighting
-set colorcolumn=100
-highlight ColorColumn ctermbg=238 guibg=#3a3a3a
 
-
+" view .choreo files as .json
+autocmd BufRead,BufNewFile *.choreo set filetype=json
 
