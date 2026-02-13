@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenRGB Profile Loader
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/openrgb --profile /home/markus/.config/OpenRGB/profile1.orp --startminimized --notray
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
