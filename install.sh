@@ -26,6 +26,8 @@ programs=(
     "swaylock"
     "fonts-font-awesome"
     "fonts-fork-awesome"
+    "fonts-material-design-icons-iconfont"
+    "fonts-noto-color-emoji"
     "xwayland"  # for X11 compatablility (e.g.: for feh)
 	"firefox-esr"
 	"thunderbird"
@@ -110,13 +112,6 @@ sudo apt update
 sudo apt install code -y # or code-insiders
 
 
-# https://www.spotify.com/de-en/download/linux/
-#printHeader "installing spotify"
-#curl -sS https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-#echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-#sudo apt-get update && sudo apt-get install spotify-client -y
-
-
 #############
 # configuring
 #############
@@ -125,10 +120,28 @@ sudo apt install code -y # or code-insiders
 newFile="$HOME/.bash_customisation"
 cp .bashrc ~/.bashrc
 
+# get jetbrains mono font
+font_dir=$HOME/.local/share/fonts
+working_dir=$(pwd)
+mkdir -p $font_dir
+cd $font_dir
+wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
+tar -xf JetBrainsMono.tar.xz
+rm JetBrainsMono.tar.xz
+fc-cache -fv
+cd $working_dir
+
 # configuring alacritty
-mkdir -p ~/.config/alacritty
-if [ -z "$(ls ~/.config/alacritty)" ]; then
-    wget https://raw.githubusercontent.com/alacritty/alacritty-theme/master/themes/blood_moon.toml -O ~/.config/alacritty/alacritty.toml
+alacritty_dir=$HOME/.config/alacritty
+mkdir -p $alacritty_dir
+if [ -z "$(ls $alacritty_dir)" ]
+then
+    wget https://raw.githubusercontent.com/alacritty/alacritty-theme/master/themes/blood_moon.toml -O $alacritty_dir/alacritty.toml
+    echo -e '\n[font]' >> $alacritty_dir/alacritty.toml
+    echo 'normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }' >> $alacritty_dir/alacritty.toml
+    echo 'bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }' >> $alacritty_dir/alacritty.toml
+    echo 'italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }' >> $alacritty_dir/alacritty.toml
+    echo 'size = 11' >> $alacritty_dir/alacritty.toml
 fi
 
 # configuring sway

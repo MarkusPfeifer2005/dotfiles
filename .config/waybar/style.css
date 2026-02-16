@@ -1,6 +1,10 @@
 * {
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-family:
+        "JetBrainsMono Nerd Font",
+        "Font Awesome 6 Free",
+        "Font Awesome 6 Brands",
+        "Material Design Icons",
+        sans-serif;
     font-size: 12px;
 }
 
