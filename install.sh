@@ -255,3 +255,9 @@ else
     echo "Power button already correctly configured."
 fi
 
+# cron setup
+mkdir -p $HOME/cron
+cp cron/delete_screenshots.sh $HOME/cron/delete_screenshots.sh
+chmod +x $HOME/cron/delete_screenshots.sh
+(crontab -l 2>/dev/null; echo "0 * * * * $HOME/cron/delete_screenshots.sh") | crontab -
+
