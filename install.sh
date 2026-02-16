@@ -31,6 +31,7 @@ programs=(
     "xwayland"  # for X11 compatablility (e.g.: for feh)
 	"firefox-esr"
 	"thunderbird"
+    "mako-notifier"
     "lxappearance"  # to switch to dark mode (might require installation of gnome-themes-extra)
                     # lxappearance edits ~/.config/gtk-3.0/settings.ini
     "alacritty"
@@ -160,6 +161,10 @@ cp .config/vimrc ~/.vimrc
 # configure zathura (PDF viewer)
 mkdir -p $HOME/.config/zathura
 cp .config/zathurarc $HOME/.config/zathura/zathurarc
+
+# configure mako notification manager
+mkdir -p $HOME/.config/mako
+cp .config/mako/config $HOME/.config/mako/config
 
 
 ##########################
