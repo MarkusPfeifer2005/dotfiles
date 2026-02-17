@@ -63,6 +63,7 @@ programs=(
     "htop"
     "grim"  # for screenshots
     "slurp"  # to select regions for screenshots
+    "syncthing"
 )
 sudo apt update
 sudo apt install "${programs[@]}" -y
