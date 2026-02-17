@@ -84,24 +84,31 @@ if [ "$CPU_ARCHITECTURE" = "x86_64" ]; then
         sudo apt install nvidia-driver firmware-misc-nonfree
     fi
 
-    # https://signal.org/download/linux/
-    printHeader "installing signal"
-    wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg;
-    cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
-    wget -O signal-desktop.sources https://updates.signal.org/static/desktop/apt/signal-desktop.sources;
-    cat signal-desktop.sources | sudo tee /etc/apt/sources.list.d/signal-desktop.sources > /dev/null
-    rm -f signal-desktop.sources signal-desktop-keyring.gpg
-    sudo apt update && sudo apt install signal-desktop
+    dpkg -s signal-desktop > /dev/null
+    if [ $? -ne 0 ]
+    then
+        # https://signal.org/download/linux/
+        printHeader "installing signal"
+        wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg;
+        cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+        wget -O signal-desktop.sources https://updates.signal.org/static/desktop/apt/signal-desktop.sources;
+        cat signal-desktop.sources | sudo tee /etc/apt/sources.list.d/signal-desktop.sources > /dev/null
+        rm -f signal-desktop.sources signal-desktop-keyring.gpg
+        sudo apt update && sudo apt install signal-desktop
+    fi
 fi
 
-# https://code.visualstudio.com/docs/setup/linux
-printHeader "installing VS Code"
-#echo "code code/add-microsoft-repo boolean true" | sudo debconf-set-selections
-sudo apt-get install gpg
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-sudo install -D -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
-rm -f microsoft.gpg
-sudo cat << EOF | sudo tee /etc/apt/sources.list.d/vscode.sources
+dpkg -s code > /dev/null
+if [ $? -ne 0 ]
+then
+    # https://code.visualstudio.com/docs/setup/linux
+    printHeader "installing VS Code"
+    #echo "code code/add-microsoft-repo boolean true" | sudo debconf-set-selections
+    sudo apt-get install gpg
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    sudo install -D -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
+    rm -f microsoft.gpg
+    sudo cat << EOF | sudo tee /etc/apt/sources.list.d/vscode.sources
 Types: deb
 URIs: https://packages.microsoft.com/repos/code
 Suites: stable
@@ -109,9 +116,10 @@ Components: main
 Architectures: amd64,arm64,armhf
 Signed-By: /usr/share/keyrings/microsoft.gpg
 EOF
-sudo apt install apt-transport-https -y
-sudo apt update
-sudo apt install code -y # or code-insiders
+    sudo apt install apt-transport-https -y
+    sudo apt update
+    sudo apt install code -y # or code-insiders
+fi
 
 
 #############
@@ -127,10 +135,13 @@ font_dir=$HOME/.local/share/fonts
 working_dir=$(pwd)
 mkdir -p $font_dir
 cd $font_dir
-wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
-tar -xf JetBrainsMono.tar.xz
-rm JetBrainsMono.tar.xz
-fc-cache -fv
+if [ $(ls | wc -w) -eq 0 ]
+then
+    wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
+    tar -xf JetBrainsMono.tar.xz
+    rm JetBrainsMono.tar.xz
+    fc-cache -fv
+fi
 cd $working_dir
 
 # configuring alacritty
