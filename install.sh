@@ -167,6 +167,11 @@ cp .config/zathurarc $HOME/.config/zathura/zathurarc
 mkdir -p $HOME/.config/mako
 cp .config/mako/config $HOME/.config/mako/config
 
+# autostart syncthing
+# https://docs.syncthing.net/users/autostart.html#linux
+systemctl --user enable syncthing.service
+systemctl --user start syncthing.service
+
 
 ##########################
 # removing GNOME bloatware
