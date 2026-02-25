@@ -162,6 +162,14 @@ mkdir -p $HOME/.config/sway $HOME/.config/waybar
 cp .config/sway/config $HOME/.config/sway/config
 cp .config/waybar/config $HOME/.config/waybar/config
 cp .config/waybar/style.css $HOME/.config/waybar/style.css
+if [ "$(hostname)" = "MacMarkus" ]
+then
+    # set waybar height
+    sed -i '/^{/a\
+    "height": 36,' $HOME/.config/waybar/config
+    # set screen scale
+    echo "output eDP-1 scale 1.5" >> $HOME/.config/sway/config
+fi
 if [ "$XDG_SESSION_TYPE" = "wayland" ]
 then
     swaymsg reload
