@@ -49,7 +49,7 @@ programs=(
     "xournalpp"
     "latexmk"
     "zathura"
-    "cups"
+    "cups"  # printer server
     "rsync"
     "vim"
     "nodejs"  # for vim plugins
@@ -64,6 +64,15 @@ programs=(
     "grim"  # for screenshots
     "slurp"  # to select regions for screenshots
     "syncthing"
+    "python3-pip"
+    "python3-numpy"
+    "python3-matplotlib"
+    "python3-pandas"
+    "python3-scipy"
+    "python3-sklearn"  # linear regression
+    "python3-notebook"  # jupyter notebook
+    "python3-ipykernel"
+    "python3-ipywidgets"
 )
 sudo apt update
 sudo apt install "${programs[@]}" -y
