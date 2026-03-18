@@ -185,7 +185,7 @@ then
 fi
 
 # configure vim
-cp .config/vimrc ~/.vimrc
+cp .vimrc ~/.vimrc
 
 # configure zathura (PDF viewer)
 mkdir -p $HOME/.config/zathura
