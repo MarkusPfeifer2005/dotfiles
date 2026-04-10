@@ -40,6 +40,7 @@ programs=(
     "gh"
     "curl"
     "freecad"
+    "openscad"
     "ldraw-parts-free"  # Consider ldraw-parts which seems to contain more parts.
     "texstudio"
     "keepassxc"
@@ -290,8 +291,8 @@ else
 fi
 
 # cron setup
-mkdir -p $HOME/cron
-cp cron/delete_screenshots.sh $HOME/cron/delete_screenshots.sh
-chmod +x $HOME/cron/delete_screenshots.sh
-(crontab -l 2>/dev/null; echo "0 * * * * $HOME/cron/delete_screenshots.sh") | crontab -
+for FILE in $(ls cron); do
+    sudo cp cron/$FILE /etc/cron.daily/$FILE
+    sudo chmod +x /etc/cron.daily/$FILE
+done
 
