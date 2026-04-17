@@ -15,7 +15,6 @@ Plug 'tomasiser/vim-code-dark'  " Dark color scheme for Vim and vim-airline, ins
 Plug 'sheerun/vim-polyglot'  " A solid language pack for Vim. (syntax highlighting)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  " Nodejs extension host, load extensions like VSCode and host language servers.
 Plug 'jiangmiao/auto-pairs'  " Vim plugin, insert or delete brackets, parens, quotes in pair
-Plug 'preservim/nerdtree'  " A tree explorer plugin for vim. 
 Plug 'Yggdroot/indentLine'  " A vim plugin to display the indention levels with thin vertical lines
 Plug 'lervag/vimtex'
 
@@ -26,7 +25,6 @@ autocmd VimEnter * if isdirectory(expand('~/.vim/plugged/coc.nvim')) && !len(glo
 syntax on
 colorscheme codedark
 set foldmethod=syntax
-filetype plugin indent on
 
 " === Autocompletion like VSCode / PyCharm ===
 
@@ -45,45 +43,18 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 " Trigger completion manually (like Ctrl+Space in VSCode)
 inoremap <silent><expr> <C-Space> coc#refresh()
 
-inoremap <c-b> <Esc>:NERDTreeToggle<cr>
-nnoremap <c-b> <Esc>:NERDTreeToggle<cr>
-
 " Set cursor shape for Insert mode (I-beam)
 let &t_SI = "\<Esc>[6 q"  " I-beam cursor in Insert mode (GUI/true color terminals)
 let &t_EI = "\<Esc>[2 q"  " Block cursor in Normal mode (GUI/true color terminals)
+
+filetype on
+filetype plugin on
+filetype indent on
 
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-
-au BufNewFile,BufRead *.py set tabstop=4
-au BufNewFile,BufRead *.py set softtabstop=4
-au BufNewFile,BufRead *.py set shiftwidth=4
-au BufNewFile,BufRead *.py set textwidth=79
-au BufNewFile,BufRead *.py set expandtab
-au BufNewFile,BufRead *.py set autoindent
-au BufNewFile,BufRead *.py set fileformat=unix
-
-let python_highlight_all=1
-
-" Enable VimTeX syntax and indentation
-filetype plugin indent on
-" Enable continuous compilation
-let g:vimtex_compiler_method = 'latexmk'
-" Enable automatic PDF viewer
-let g:vimtex_view_method = 'zathura'
-" Disable concealment completely
-let g:tex_conceal = ""
-let g:vimtex_syntax_conceal_disable = 1
-set conceallevel=0
-set concealcursor=
-let g:indentLine_fileTypeExclude = ['tex']
-" save & compile shortcut [F5]
-"nnoremap <F5> :w<CR>:VimtexCompile<CR>:echo "Compiled!"<CR>
-nnoremap <F5> :w<CR>:!python3 %<CR>
-" disable warnings
-"let g:vimtex_quickfix_mode = 0
 
 " view .choreo files as .json
 autocmd BufRead,BufNewFile *.choreo set filetype=json

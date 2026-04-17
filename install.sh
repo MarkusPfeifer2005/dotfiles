@@ -75,8 +75,8 @@ programs=(
     "python3-ipykernel"
     "python3-ipywidgets"
 )
-sudo apt update
-sudo apt install "${programs[@]}" -y
+sudo apt update >/dev/null
+sudo apt install "${programs[@]}" -y >/dev/null
 
 # setup Bluetooth
 sudo apt purge pulseaudio-module-bluetooth -y
@@ -187,6 +187,9 @@ fi
 
 # configure vim
 cp .vimrc ~/.vimrc
+VIM_DIR=.vim/ftplugin
+mkdir -p $HOME/$VIM_DIR
+cp $VIM_DIR/*.vim $HOME/$VIM_DIR
 
 # configure zathura (PDF viewer)
 mkdir -p $HOME/.config/zathura
@@ -273,7 +276,7 @@ bloatware=(
     "baobab"
 )
 
-sudo apt purge "${gnome_games[@]}" "${bloatware[@]}" -y
+sudo apt purge "${gnome_games[@]}" "${bloatware[@]}" -y >/dev/null
 
 
 ######################
@@ -286,8 +289,6 @@ HASH2=$(sha256sum etc/systemd/logind.conf | awk '{ print $1 }')
 if [ $HASH1 != $HASH2 ]; then
     sudo cp etc/systemd/logind.conf /etc/systemd/logind.conf
     systemctl restart systemd-logind.service
-else
-    echo "Power button already correctly configured."
 fi
 
 # cron setup
