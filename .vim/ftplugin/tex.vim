@@ -9,7 +9,5 @@ set conceallevel=0
 set concealcursor=
 let g:indentLine_fileTypeExclude = ['tex']
 " save & compile shortcut [F5]
-nnoremap <F5> :w<CR>:VimtexCompile<CR>:echo "Compiled!"<CR>
-" disable warnings
-"let g:vimtex_quickfix_mode = 0
+nnoremap <F5> :w<CR>:VimtexCompile<CR>
 
