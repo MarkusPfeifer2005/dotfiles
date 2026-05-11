@@ -74,6 +74,7 @@ programs=(
     "python3-notebook"  # jupyter notebook
     "python3-ipykernel"
     "python3-ipywidgets"
+    "texlive-full"
 )
 sudo apt update >/dev/null
 sudo apt install "${programs[@]}" -y >/dev/null
